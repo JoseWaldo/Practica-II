@@ -12,11 +12,11 @@ public class NodoLG {
 
     // --------------ATRIBUTOS--------------
     private int sw;
-    private String dato;
+    private Object dato;
     private NodoLG liga;
 
     // --------------CONSTRUCTOR--------------
-    public NodoLG(String dato) {
+    public NodoLG(Object dato) {
         this.dato = dato;
         this.sw = 0;
     }
@@ -26,7 +26,7 @@ public class NodoLG {
         return this.sw;
     }
 
-    public String retornaDato() {
+    public Object retornaDato() {
         return this.dato;
     }
 
@@ -39,7 +39,7 @@ public class NodoLG {
         this.sw = sw;
     }
 
-    public void cambiarDato(String dato) {
+    public void cambiarDato(Object dato) {
         this.dato = dato;
     }
 

@@ -54,14 +54,7 @@ public class test {
         System.out.println("Ultimo nodo de la lista: " + lista.retornarUltimoNodo().retornarDato());
         NodoSimple nodoAnt = lista.anterior(nodoD);
         System.out.println("El nodo anterior al nodoD es: " + nodoAnt.retornarDato());
-        /*
-        NodoSimple nodAntEncontrado = lista.buscarDato("b1");
-        if (nodAntEncontrado != null) {
-            System.out.println("El dato encontrado esta luego de: " + nodAntEncontrado.retornarDato());
-        } else {
-            System.out.println("El dato no está en la lista");
-        }
-         */
+       
         System.out.println("-------ELIMINANDO EL PRIMER NODO-------");
         lista.eliminarPrimerNodo();
         lista.imprimir();
@@ -88,6 +81,14 @@ public class test {
         System.out.println("El dato que está en el tope de la pila es: " + pila.tope());
         pila.desapilar();
         System.out.println("Luego de desapilar,\nEl dato que está en el tope de la pila es: " + pila.tope());
+        
+        /*------------ PROBANDO LA CLASE ARBOL LG ------------*/
+        ArbolLg arbol = new ArbolLg();
+        
+        arbol.construirArbol("(a(b(c,d(e)),f,g(h,i(j,k(l)),m,n)))");
+        System.out.println("Primero: " + arbol.retornarPrimero().retornaDato());
+        System.out.println("Ultimo: " + arbol.retornarUltimo().retornaDato());
+
 
     }
 }

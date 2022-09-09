@@ -94,7 +94,8 @@ public class LSL {
     // Elimina el primer nodo de la lista.
     public void eliminarPrimerNodo() {
         if (!this.esVacia()) {
-            this.primero = this.primero.retornarLiga();
+            NodoSimple sigPrimero = this.primero.retornarLiga();
+            this.primero = sigPrimero;
         }
     }
 
@@ -131,7 +132,7 @@ public class LSL {
 
     // Retorna verdadero si la lista está vacia
     public boolean esVacia() {
-        return primero == ultimo && primero == null;
+        return this.primero == this.ultimo && this.primero == null;
     }
 
     // Retorna una respuesta de si el nodo indice es igual a nulo

@@ -30,21 +30,28 @@ public class Pila {
     // Desapilar, retorna el dato que se encuentra en el tope de la pila,
     // y luego lo remueve.
     public Object desapilar() {
-        if (this.listaDeElementos.esVacia()) {
+        if (this.esVacia()) {
             System.out.println("No es posible desapilar, ya que no hay datos");
             return null;
         }
         NodoSimple primerNodo = this.listaDeElementos.retonarPrimerNodo();
         this.listaDeElementos.eliminarPrimerNodo();
-        return primerNodo.retornarDato();
+        if(primerNodo != null){
+            return primerNodo.retornarDato();
+        }
+        return null;
     }
 
     // Muestra cual dato se encuentra en el tope de la pila sin eliminarlo.
     public Object tope() {
-        if (this.listaDeElementos.esVacia()) {
+        if (this.esVacia()) {
             System.out.println("Lista vacia, no hay elementos que mostrar");
             return null;
         }
         return this.listaDeElementos.retonarPrimerNodo().retornarDato();
+    }
+    
+    public boolean esVacia() {
+        return this.listaDeElementos.retonarPrimerNodo() == null;
     }
 }
