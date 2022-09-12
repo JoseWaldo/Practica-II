@@ -86,9 +86,29 @@ public class test {
         ArbolLg arbol = new ArbolLg();
         
         arbol.construirArbol("(a(b(c,d(e)),f,g(h,i(j,k(l)),m,n)))");
-        System.out.println("Primero: " + arbol.retornarPrimero().retornaDato());
-        System.out.println("Ultimo: " + arbol.retornarUltimo().retornaDato());
-
-
+        //arbol.construirArbol("(a(b(c,d),e,f(g,h,i(k),j)))");
+        int alturaArbol = arbol.altura();
+        int gradoArbol = arbol.grado();
+        int numHojas = arbol.numHojas();
+        int gradoRegistro = arbol.gradoRegistro("k");
+        int nivelRegistro = arbol.nivelRegistro("g");
+        String ancestroRegistro = arbol.ancestros("i");
+        String imprimir = arbol.imprimir();
+        System.out.println(alturaArbol);
+        System.out.println(gradoArbol);
+        System.out.println(numHojas);
+        System.out.println(gradoRegistro);
+        System.out.println(nivelRegistro);
+        System.out.println(ancestroRegistro);
+        //System.out.println(imprimir);
+        //System.out.println("Primero: " + arbol.retornarPrimero().retornaDato());
+        //System.out.println("Ultimo: " + arbol.retornarUltimo().retornaDato());
+        // arbol.imprimirHilera();
+        //System.out.println("La altura del árbol es: " + arbol.altura());
+        //System.out.println("El grado del árbol es: " + arbol.grado());
+        //System.out.println("El número de hojas del árbol es: " + arbol.numHojas());
+        //System.out.println("El grado del registro F es: " + arbol.gradoRegistro("i"));
+        System.out.println(arbol.recorrerArbol());
+        //arbol.recorrerArbol();
     }
 }
