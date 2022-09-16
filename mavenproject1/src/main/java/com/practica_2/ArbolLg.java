@@ -33,6 +33,11 @@ public class ArbolLg {
     public void construirArbol(String hilera) {
         
         int longitudHilera = hilera.length();
+        
+        if(!this.validarHilera(hilera)) {
+            return;
+        }
+        
         Pila pila = new Pila();
         NodoLG p = new NodoLG(null);
         this.ultimo = p;
@@ -91,8 +96,7 @@ public class ArbolLg {
         }
         
     }
-    
-    // NO FUNCIONA
+
     public void imprimirHilera() {
         String hilera = "";
         hilera = "(" + this.primero.retornaDato() + "(";
@@ -154,43 +158,7 @@ public class ArbolLg {
         
         System.out.println(hilera);
     }
-    
-    /*
-    // NO FUNCIONA
-    public String imprimir() {
         
-        String escritura = "(" + this.primero.retornaDato();
-        Pila pila = new Pila();
-        NodoLG nodo = this.primero;
-        
-        while(nodo != null) {
-            if(nodo.retornaSw() == 0 && nodo.retornaLiga() != null && nodo.retornaLiga().retornaSw() == 0) {
-                escritura += nodo.retornaDato() + ",";
-                nodo = nodo.retornaLiga();
-            }
-            else if(nodo.retornaSw() == 1 && nodo.retornaLiga() != null && nodo.retornaLiga().retornaSw() == 1) {
-                escritura += nodo.retornaDato();
-                nodo = nodo.retornaLiga();
-            }
-            else if(nodo.retornaSw() == 1) {
-                pila.apilar(nodo);
-                nodo = (NodoLG) nodo.retornaDato();
-                escritura += "(" + nodo.retornaDato();
-            }
-            while(nodo == null && !pila.esVacia()) {
-                nodo = (NodoLG) pila.desapilar();
-                nodo = nodo.retornaLiga();
-                escritura += ")";
-            }
-        }
-        
-        escritura += "))";
-        
-        return escritura;
-    }
-    
-*/
-    
     public String imprimir() {
         NodoLG p = this.primero;
         Pila pila = new Pila();
@@ -436,8 +404,6 @@ public class ArbolLg {
         return grado;
     }
     
-    
-    
     public int nivelRegistro(String registro) {
         NodoLG p = this.primero;
         Pila pilaPadres = new Pila();
@@ -564,4 +530,51 @@ public class ArbolLg {
         return recorrido;
     }
     
+    private boolean validarHilera(String hilera) {
+        int longitudHilera = hilera.length();
+        
+        if(longitudHilera < 3) {
+            System.out.println("No se puede crear un árbol con esa cantidad de cáracteres");
+            return false;
+        }
+        
+        String hileraPrimerCar = hilera.charAt(0) + "";
+        String hileraUltimoCar = hilera.charAt(longitudHilera - 1) + "";
+        
+        if(!hileraPrimerCar.equals("(")) {
+            System.out.println("La entrada debe empezar por un (");
+            return false;
+        }
+        
+        if(!hileraUltimoCar.equals(")")) {
+            System.out.println("La entrada debe finalizar por un )");
+            return false;
+        }
+        
+        String caracteresPermitidos = "qwertyuiopasdfghjklñzxcvbnm,()";
+        String car = "";
+        int contadorCierraParentesis = 0;
+        int contadorAbreParentesis = 0;
+        for(int i = 0; i < longitudHilera; i++) {
+            car = hilera.charAt(i) + "";
+            if(!caracteresPermitidos.contains(car)) {
+                System.out.println("La entrada no puede ser construida debido a que el caracter: " + car + " es invalido.");
+                return false;
+            }
+            if(car.equals("(")) {
+                contadorAbreParentesis++;
+            }
+            if(car.equals(")")) {
+                contadorCierraParentesis++;
+            }
+        }
+        
+        if(contadorCierraParentesis != contadorAbreParentesis) {
+            System.out.println("La entrada tiene " + contadorAbreParentesis + " \"(\" " + " y " + contadorCierraParentesis +  " \")\". \n"
+                    + "Deben tener la misma cantidad");
+            return false;
+        }
+        
+        return true;
+    }
 }
