@@ -92,6 +92,7 @@ public class ArbolLg {
         
     }
     
+    // NO FUNCIONA
     public void imprimirHilera() {
         String hilera = "";
         hilera = "(" + this.primero.retornaDato() + "(";
@@ -154,6 +155,8 @@ public class ArbolLg {
         System.out.println(hilera);
     }
     
+    /*
+    // NO FUNCIONA
     public String imprimir() {
         
         String escritura = "(" + this.primero.retornaDato();
@@ -184,6 +187,59 @@ public class ArbolLg {
         escritura += "))";
         
         return escritura;
+    }
+    
+*/
+    
+    public String imprimir() {
+        NodoLG p = this.primero;
+        Pila pila = new Pila();
+        String recorrido = "";
+        
+        if(p == null) {
+            return "Árbol vacío";
+        }
+        
+        else if(p.retornaLiga() == null) {
+            return "(" + p.retornaDato() + ")";
+        }
+        
+        recorrido += "(" + p.retornaDato() + "(";
+        p = p.retornaLiga();
+        
+        while(p != null) {
+            
+            if(p.retornaSw() == 1) {
+                pila.apilar(p);
+                p = (NodoLG) p.retornaDato();
+                recorrido += p.retornaDato() + "(";
+                p = p.retornaLiga();
+            }
+            
+            else if(p.retornaSw() == 0 && p.retornaLiga() != null) {
+                recorrido += p.retornaDato() + ",";
+                p = p.retornaLiga();
+            }
+            
+            else if(p.retornaSw() == 0 && p.retornaLiga() == null) {
+                recorrido += p.retornaDato();
+                p = p.retornaLiga();
+            }
+            
+            while(p == null && !pila.esVacia()) {
+                recorrido += ")";
+                p = (NodoLG) pila.desapilar();
+                p = p.retornaLiga();
+                if(p != null) {
+                    recorrido += ",";
+                }
+            }
+        }
+        
+        recorrido += "))";
+        
+        return recorrido;
+
     }
     
     public int altura() {
@@ -380,108 +436,108 @@ public class ArbolLg {
         return grado;
     }
     
+    
+    
     public int nivelRegistro(String registro) {
-        int altura = 2;
-        int alturaMax = 0;
-        Pila pila = new Pila();
+        NodoLG p = this.primero;
+        Pila pilaPadres = new Pila();
+        Pila pilaRecorrido = new Pila();
         
-        if(this.primero.retornaLiga() == null) {
+        if(p == null) {
+            System.out.println("El árbol está vacío, no se puede encontrar el dato");
+            return 0;
+        }
+        
+        else if(p.retornaLiga() == null && !p.retornaDato().equals(registro)) {
+            System.out.println("Solo existe la raíz, y el registro no coincide");
+            return 0;
+        }
+        
+        else if(p.retornaLiga() == null && p.retornaDato().equals(registro)) {
             return 1;
         }
         
-        NodoLG p = this.primero.retornaLiga();
+        pilaPadres.apilar(p.retornaDato());
+        p = p.retornaLiga();
         
-        while(p != null){
-            if(p.retornaDato().equals(registro)) {
-                return altura;
+        while(p != null) {
+            if(p.retornaSw() == 0) {
+                if(p.retornaDato().equals(registro)) {
+                    if(!p.retornaDato().equals(pilaPadres.tope())) {
+                        pilaPadres.apilar(p.retornaDato());
+                    }
+                    int niveles = 0;
+                    while(!pilaPadres.esVacia()) {
+                        niveles++;
+                        pilaPadres.desapilar();
+                    }
+                    return niveles;
+                }
+                p = p.retornaLiga();
             }
-            if(p.retornaSw() == 1) {
-                pila.apilar(p);
+            
+            else if(p.retornaSw() == 1) {
+                pilaRecorrido.apilar(p);
                 p = (NodoLG) p.retornaDato();
-                altura++;
+                pilaPadres.apilar(p.retornaDato());
             }
             
-            else if(p.retornaLiga() != null){
-                if(p.retornaSw() == 0 && p.retornaLiga().retornaSw() == 0) {
-                    p = p.retornaLiga();
-                }
-                else if(p.retornaSw() == 0 && p.retornaLiga().retornaSw() == 1) {
-                    p = p.retornaLiga();
-                }
+            while(p == null && !pilaRecorrido.esVacia()) {
+                p = (NodoLG) pilaRecorrido.desapilar();
+                p = p.retornaLiga();
+                pilaPadres.desapilar();
             }
-            
-            else if(p.retornaLiga() == null && !pila.esVacia()) {
-                if(altura > alturaMax) {
-                    alturaMax = altura;
-                    altura--;
-                    p = (NodoLG) pila.desapilar();
-                    p = p.retornaLiga();
-                }
-                else {
-                    p = (NodoLG) pila.desapilar();
-                    p = p.retornaLiga();
-                }
-            }
-            
         }
         
-        return alturaMax;
+        System.out.println("No se encontró el registro");
+        return 0;
     }
     
-    public String ancestros(String registro) {
-        Pila pila = new Pila();
+    public String ancestros(String dato) {
+        String respuesta = "";
+        String car = "";
+        
+        NodoLG p = this.primero;
+        
+        Pila pilaPadres = new Pila();
         Pila pilaRecorrido = new Pila();
-        NodoLG nodo = this.primero;
-        String ancestros = "";
         
-        while(nodo != null) {
-            
-            if(nodo.retornaSw() == 0) {
-                nodo = nodo.retornaLiga();
-            }
-            else if(nodo.retornaSw() == 1) {
-                pila.apilar(nodo);
-                pilaRecorrido.apilar(nodo);
-                nodo = (NodoLG) nodo.retornaDato();
-            }
-            
-            while(nodo == null && !pilaRecorrido.esVacia()) {
-                nodo = (NodoLG) pilaRecorrido.desapilar();
-                nodo = nodo.retornaLiga();
-            }
-            
+        if(p == null) {
+            return "Árbol vacío. No es posible hallar los ancestros del dato";
         }
         
-        nodo = this.primero;
+        else if(p.retornaDato().equals(dato)){
+            return "El ancestro de la raiz es el mismo: " + p.retornaDato();
+        }
         
-        while(nodo != null) {
-            if(nodo.retornaDato().equals(registro)) {
-                ancestros = (String) this.primero.retornaDato();
-                while(!pila.esVacia()) {
-                    nodo = (NodoLG) pila.desapilar();
-                    nodo = (NodoLG) nodo.retornaDato();
-                    ancestros = ancestros + nodo.retornaDato();
-                }
-                return ancestros;
-            }
-            
-            nodo = nodo.retornaLiga();
-            if(nodo != null) {
-                if(nodo.retornaSw() == 0) {
-                    if(nodo.retornaLiga() == null && !pilaRecorrido.esVacia()) {
-                        nodo = (NodoLG) pilaRecorrido.desapilar();
+        pilaPadres.apilar(p.retornaDato());
+        
+        while(p != null) {
+            if(p.retornaSw() == 0) {
+                if(p.retornaDato().equals(dato)) {
+                    respuesta += "Los ancestros de: " + p.retornaDato() + " son: ";
+                    while(!pilaPadres.esVacia()) {
+                        car = (String) pilaPadres.desapilar();
+                        respuesta += car + " ";
                     }
+                    return respuesta;
                 }
-            
-                else if(nodo.retornaSw() == 1) {
-                    pilaRecorrido.apilar(nodo);
-                    nodo = (NodoLG) nodo.retornaDato();
-                }
+                p = p.retornaLiga();
             }
             
+            else if(p.retornaSw() == 1) {
+                pilaRecorrido.apilar(p);
+                p = (NodoLG) p.retornaDato();
+                pilaPadres.apilar(p.retornaDato());
+            }
+            
+            while(p == null && !pilaRecorrido.esVacia()) {
+                p = (NodoLG) pilaRecorrido.desapilar();
+                p = p.retornaLiga();
+            }
         }
         
-        return ancestros;
+        return "No hay ningún ancestro del dato en el árbol";
     }
     
     public String recorrerArbol() {
