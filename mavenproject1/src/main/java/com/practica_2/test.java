@@ -85,7 +85,7 @@ public class test {
         /*------------ PROBANDO LA CLASE ARBOL LG ------------*/
         ArbolLg arbol = new ArbolLg();
         //arbol.construirArbol("(a(b(c,d(e)),f,g(h,i(j,k(l)),m,n)))");
-        arbol.construirArbol("(a(b(c,d),e,f(g,h,i(k),j))))");
+        arbol.construirArbol("(a(b(c,d),e,f(g,h,i(k),j)))");
         /*
         int alturaArbol = arbol.altura();
         int gradoArbol = arbol.grado();

@@ -97,68 +97,6 @@ public class ArbolLg {
         
     }
 
-    public void imprimirHilera() {
-        String hilera = "";
-        hilera = "(" + this.primero.retornaDato() + "(";
-        NodoLG p = this.primero.retornaLiga();
-        Pila pila = new Pila();
-        
-        while(p != null) {
-            
-            try {
-                
-                if(p.retornaLiga() != null) {
-                    if(p.retornaSw() == 1 && p.retornaLiga().retornaSw() == 0) {
-                        pila.apilar(p);
-                        p = (NodoLG) p.retornaDato();
-                        hilera += p.retornaDato() + "(";
-                        p = p.retornaLiga();
-                    }
-
-                    else if(p.retornaSw() == 0 && p.retornaLiga().retornaSw() == 1) {
-                        hilera += p.retornaDato();
-                        p = p.retornaLiga();
-                        pila.apilar(p);
-                        p = (NodoLG) p.retornaDato();
-                        hilera += "," + p.retornaDato() + "(";
-                        p = p.retornaLiga();
-                    }
-
-                    else if(p.retornaSw() == 0 && p.retornaLiga().retornaSw() == 0) {
-                        hilera += p.retornaDato() + ",";
-                        p = p.retornaLiga();
-                    }
-                    
-                    else if(p.retornaSw() == 1 && p.retornaLiga() != null) {
-                        hilera += ",";
-                        p = (NodoLG) p.retornaDato();
-                    }
-                } else {
-                    if(p.retornaSw() == 0 && p.retornaLiga() == null && !pila.esVacia()) {
-                        hilera += p.retornaDato() + ")";
-                        p = (NodoLG) pila.desapilar();
-                    }
-
-                    else if(p.retornaSw() == 1 && p.retornaLiga() == null && !pila.esVacia()) {
-                        hilera += ")";
-                        p = (NodoLG) pila.desapilar();
-                    }
-
-                    else if(p.retornaSw() == 1 && p.retornaLiga() == null && pila.esVacia()) {
-                        break;
-                    }
-                }
-
-            } catch (Exception e) {
-                System.err.println("Se ha generado un error de tipo: " + e.getMessage());
-            }
-        }
-        
-        hilera += "))";
-        
-        System.out.println(hilera);
-    }
-        
     public String imprimir() {
         NodoLG p = this.primero;
         Pila pila = new Pila();
@@ -483,6 +421,9 @@ public class ArbolLg {
                 if(p.retornaDato().equals(dato)) {
                     respuesta += "Los ancestros de: " + p.retornaDato() + " son: ";
                     while(!pilaPadres.esVacia()) {
+                        if(dato.equals(pilaPadres.tope())) {
+                            pilaPadres.desapilar();
+                        }
                         car = (String) pilaPadres.desapilar();
                         respuesta += car + " ";
                     }
@@ -530,7 +471,7 @@ public class ArbolLg {
         return recorrido;
     }
     
-    private boolean validarHilera(String hilera) {
+    public boolean validarHilera(String hilera) {
         int longitudHilera = hilera.length();
         
         if(longitudHilera < 3) {
